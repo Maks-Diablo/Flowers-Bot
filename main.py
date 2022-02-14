@@ -4,6 +4,7 @@ import telebot
 from aiogram.types import ReplyKeyboardRemove, \
     ReplyKeyboardMarkup, KeyboardButton, \
     InlineKeyboardMarkup, InlineKeyboardButton
+from telebot import types
 
 
 def telegram_bot():
@@ -22,11 +23,15 @@ def telegram_bot():
 
     @bot.message_handler(commands=["start"])
     def start_message(message):
-        bot.send_message(message.chat.id, f'{day_hours}\nВас приветствует Бот цветочного магазина "Название магазина"\nХотите посмотреть наш ассортимент?')
-        button_hi = KeyboardButton('Привет! 👋')
+        #bot.send_message(message.chat.id, f'{day_hours}\nВас приветствует Бот цветочного магазина "Название магазина"\nХотите посмотреть наш ассортимент?')
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn1 = types.KeyboardButton("👋 Поздороваться")
+        btn2 = types.KeyboardButton("❓ Задать вопрос")
+        markup.add(btn1, btn2)
+        bot.send_message(message.chat.id,
+                         text="Привет, {0.first_name}! Я тестовый бот для твоей статьи для habr.com".format(
+                             message.from_user), reply_markup=markup)
 
-        greet_kb = ReplyKeyboardMarkup()
-        greet_kb.add(button_hi)
     @bot.message_handler(content_types=["text"])
     def send_text(message):
         if message.text.lower() == "да":

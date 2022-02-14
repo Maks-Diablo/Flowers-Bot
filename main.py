@@ -7,30 +7,34 @@ from aiogram.types import ReplyKeyboardRemove, \
 from telebot import types
 
 
-def telegram_bot():
-    bot = telebot.TeleBot('5205670895:AAFlbuNp91KUl0jO52rPBEpCkQcQl2yoQG0')
-#Определяем вид дня
+def day_time():    #Определяем вид дня
+    global day_hours
     now = datetime.now()
     day_hours = now.strftime("%H")
-    if (day_hours > "22") and (day_hours < "7"):
-        day_hours = "Доброй ночи!"
+    if (day_hours > "22") or (day_hours < "7"):
+        day_hours = "Доброй ночи,"
     elif (day_hours > "7") and (day_hours < "12"):
-        day_hours = "Доброе утро!"
+        day_hours = "Доброе утро,"
     elif (day_hours > "12") and (day_hours < "18"):
-        day_hours = "Добрый день!"
+        day_hours = "Добрый день,"
     elif (day_hours > "18") and (day_hours < "22"):
-        day_hours = "Добрый вечер!"
+        day_hours = "Добрый вечер,"
+    return day_hours
+def telegram_bot():
+    bot = telebot.TeleBot('5205670895:AAFlbuNp91KUl0jO52rPBEpCkQcQl2yoQG0')
+
 
     @bot.message_handler(commands=["start"])
     def start_message(message):
-        #bot.send_message(message.chat.id, f'{day_hours}\nВас приветствует Бот цветочного магазина "Название магазина"\nХотите посмотреть наш ассортимент?')
+
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn1 = types.KeyboardButton("👋 Поздороваться")
-        btn2 = types.KeyboardButton("❓ Задать вопрос")
-        markup.add(btn1, btn2)
-        bot.send_message(message.chat.id,
-                         text="Привет, {0.first_name}! Я тестовый бот для твоей статьи для habr.com".format(
-                             message.from_user), reply_markup=markup)
+        btn1 = types.KeyboardButton("Да")
+        markup.add(btn1)
+        day_time()
+        bot.send_message(message.chat.id,text=f"{day_hours}"+"{0.first_name}!\nВас приветствует Бот цветочного "
+                                                             "магазина \"Название магазина\"\nХотите посмотреть наш "
+                                                             "ассортимент?".format(message.from_user),
+                         reply_markup=markup)
 
     @bot.message_handler(content_types=["text"])
     def send_text(message):

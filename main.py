@@ -11,9 +11,11 @@ def day_time():    #Определяем вид дня
     global day_hours
     now = datetime.now()
     day_hours = now.strftime("%H")
-    if (day_hours > "22") or (day_hours < "7"):
+    if (day_hours > "22"):
         day_hours = "Доброй ночи,"
-    elif (day_hours > "7") and (day_hours < "12"):
+    elif(day_hours < "07"):
+        day_hours = "Доброй ночи,"
+    elif (day_hours > "07") and (day_hours < "12"):
         day_hours = "Доброе утро,"
     elif (day_hours > "12") and (day_hours < "18"):
         day_hours = "Добрый день,"

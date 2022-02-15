@@ -33,22 +33,28 @@ def telegram_bot():
         btn1 = types.KeyboardButton("Да")
         markup.add(btn1)
         day_time()
-        bot.send_message(message.chat.id,text=f"{day_hours}"+"{0.first_name}!\nВас приветствует Бот цветочного "
-                                                             "магазина \"Название магазина\"\nХотите посмотреть наш "
-                                                             "ассортимент?".format(message.from_user),
+        bot.send_message(message.chat.id, text=f"{day_hours}" + "{0.first_name}!\nВас приветствует Бот цветочного "
+                                                                "магазина \"Название магазина\"\nХотите посмотреть наш "
+                                                                "ассортимент?".format(message.from_user),
                          reply_markup=markup)
 
     @bot.message_handler(content_types=["text"])
     def send_text(message):
         if message.text.lower() == "да":
+            markup = types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True)
+            btn1 = types.KeyboardButton("Готовые букеты")
+            btn2 = types.KeyboardButton("Собрать свой")
+            markup.add(btn1,btn2)
+            day_time()
+            bot.send_message(message.chat.id, text='Хорошо! Хотите посмотреть готовые букеты или собрать свой?'\
+                             .format(message.from_user),reply_markup=markup)
 
-            bot.send_message(
-                message.chat.id,
-                "Круто"
-            )
-
+        elif message.text.lower() == "готовые букеты":
+            bot.send_message(message.chat.id, text='"тут скинулись готовые букеты"'.format())
+        elif message.text.lower() == "собрать свой":
+            bot.send_message(message.chat.id, text='"а тут я хз"'.format())
         else:
-            bot.send_message(message.chat.id, 'Придура... Напиши "Го"')
+            bot.send_message(message.chat.id, 'Ошибка!')
 
     bot.polling()
 
